@@ -36,7 +36,7 @@ class Database:
 
         self.conn.commit()
 
-    # ========== CRUD DOS CONTEÚDOS ==========
+    # CRUD DOS CONTEÚDOS 
 
     def add_content(self, data):
         """Adiciona novo conteúdo"""
