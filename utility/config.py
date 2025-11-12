@@ -1,6 +1,4 @@
-# config.py - Configurações do CineGamer (CORRIGIDO)
-
-cores = { 
+colors = { 
     'primary': '#2C3E50', 
     'secund': '#3498DB', 
     'acento': '#1ABC9C', 

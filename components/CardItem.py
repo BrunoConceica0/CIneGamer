@@ -1,18 +1,18 @@
 import tkinter as tk
-from config import cores, fonts, spacing         
+from utility.config import colors, fonts, spacing         
 
 class CardItem(tk.Frame):
     #Card para exibir um item da coleção
     
     def __init__(self, parent, item, on_edit=None, on_delete=None, **kwargs):
-        super().__init__(parent, bg=cores['bg_card'], relief=tk.RAISED, bd=2, **kwargs)
+        super().__init__(parent, bg=colors['bg_card'], relief=tk.RAISED, bd=2, **kwargs)
         
         self.item = item
         
-        container = tk.Frame(self, bg=cores['bg_card'])
+        container = tk.Frame(self, bg=colors['bg_card'])
         container.pack(fill=tk.BOTH, expand=True, padx=spacing['md'], pady=spacing['md'])
         
-        header = tk.Frame(container, bg=cores['bg_card'])
+        header = tk.Frame(container, bg=colors['bg_card'])
         header.pack(fill=tk.X, pady=(0, spacing['sm']))
   
         icones_types = {'Filme': '🎬', 'Série': '📺', 'Jogo': '🎮'}
@@ -22,7 +22,7 @@ class CardItem(tk.Frame):
             header,
             text=icone,
             font=('Segoe UI', 20),
-            bg=cores['bg_card']
+            bg=colors['bg_card']
         ).pack(side=tk.LEFT, padx=(0, spacing['sm']))
         
         
@@ -30,11 +30,11 @@ class CardItem(tk.Frame):
             header,
             text=item[1],  
             font=fonts['titulo_small'],
-            bg=cores['bg_card'],
-            fg=cores['text_dark']
+            bg=colors['bg_card'],
+            fg=colors['text_dark']
         ).pack(side=tk.LEFT, fill=tk.X, expand=True)
         
-        info_frame = tk.Frame(container, bg=cores['bg_card'])
+        info_frame = tk.Frame(container, bg=colors['bg_card'])
         info_frame.pack(fill=tk.X, pady=spacing['xs'])
 
         info1 = f"{item[2]} • {item[3]}"
@@ -45,12 +45,12 @@ class CardItem(tk.Frame):
             info_frame,
             text=info1,
             font=fonts['body'],
-            bg=cores['bg_card'],
-            fg=cores['text_secund']
+            bg=colors['bg_card'],
+            fg=colors['text_secund']
         ).pack(anchor='w')
         
 
-        info2_frame = tk.Frame(info_frame, bg=cores['bg_card'])
+        info2_frame = tk.Frame(info_frame, bg=colors['bg_card'])
         info2_frame.pack(fill=tk.X, pady=(spacing['xs'], 0))
 
         stars = '⭐' * item[5] if item[5] else 'Sem avaliação'
@@ -58,24 +58,24 @@ class CardItem(tk.Frame):
             info2_frame,
             text=stars,
             font=fonts['body'],
-            bg=cores['bg_card'],
-            fg=cores['alert']
+            bg=colors['bg_card'],
+            fg=colors['alert']
         ).pack(side=tk.LEFT)
 
-        cores_status = {
-            'Assistido': cores['success'],
-            'Assistindo': cores['info'],
-            'Pendente': cores['alert'],
-            'Abandonado': cores['erro']
+        colors_status = {
+            'Assistido': colors['success'],
+            'Assistindo': colors['info'],
+            'Pendente': colors['alert'],
+            'Abandonado': colors['erro']
         }
-        cor_status = cores_status.get(item[6], cores['text_secund'])
+        cor_status = colors_status.get(item[6], colors['text_secund'])
         
         status_label = tk.Label(
             info2_frame,
             text=item[6],
             font=fonts['small'],
             bg=cor_status,
-            fg=cores['text_white'],
+            fg=colors['text_white'],
             padx=spacing['sm'],
             pady=spacing['xs']
         )
@@ -91,12 +91,12 @@ class CardItem(tk.Frame):
                 info2_frame,
                 text=f"⏱️ {time_text}",
                 font=fonts['body'],
-                bg=cores['bg_card'],
-                fg=cores['text_secund']
+                bg=colors['bg_card'],
+                fg=colors['text_secund']
             ).pack(side=tk.RIGHT, padx=(0, spacing['md']))
         
         if on_edit or on_delete:
-            btn_frame = tk.Frame(container, bg=cores['bg_card'])
+            btn_frame = tk.Frame(container, bg=colors['bg_card'])
             btn_frame.pack(fill=tk.X, pady=(spacing['md'], 0))
             
             if on_edit:
@@ -104,8 +104,8 @@ class CardItem(tk.Frame):
                     btn_frame,
                     text='✏️ Editar',
                     command=lambda: on_edit(item[0]),
-                    bg=cores['info'],
-                    fg=cores['text_white'],
+                    bg=colors['info'],
+                    fg=colors['text_white'],
                     font=fonts['small'],
                     relief=tk.FLAT,
                     cursor='hand2',
@@ -119,8 +119,8 @@ class CardItem(tk.Frame):
                     btn_frame,
                     text='🗑️ Deletar',
                     command=lambda: on_delete(item[0]),
-                    bg=cores['erro'],
-                    fg=cores['text_white'],
+                    bg=colors['erro'],
+                    fg=colors['text_white'],
                     font=fonts['small'],
                     relief=tk.FLAT,
                     cursor='hand2',

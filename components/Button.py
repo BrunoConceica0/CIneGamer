@@ -1,15 +1,15 @@
 import tkinter as tk
-from config import cores, fonts
+from utility.config import colors, fonts
 
 class button(tk.Button):
 
     def __init__(self, parent, text, command=None, style='primary', **kwargs):
         styles = {
-            'primary': {'bg': cores['secund'], 'fg': cores['text_white'], 'hover': '#2980B9'},
-            'success': {'bg': cores['success'], 'fg': cores['text_white'], 'hover': '#229954'},
-            'erro': {'bg': cores['erro'], 'fg': cores['text_white'], 'hover': '#C0392B'},
-            'alert': {'bg': cores['alert'], 'fg': cores['text_white'], 'hover': '#D68910'},
-            'secund': {'bg': cores['bg_white'], 'fg': cores['text_dark'], 'hover': '#D5DBDB'},
+            'primary': {'bg': colors['secund'], 'fg': colors['text_white'], 'hover': '#2980B9'},
+            'success': {'bg': colors['success'], 'fg': colors['text_white'], 'hover': '#229954'},
+            'erro': {'bg': colors['erro'], 'fg': colors['text_white'], 'hover': '#C0392B'},
+            'alert': {'bg': colors['alert'], 'fg': colors['text_white'], 'hover': '#D68910'},
+            'secund': {'bg': colors['bg_white'], 'fg': colors['text_dark'], 'hover': '#D5DBDB'},
         }
 
         selected_style = styles.get(style, styles["primary"])
@@ -31,7 +31,6 @@ class button(tk.Button):
         self.cor_normal = selected_style['bg']
         self.cor_hover = selected_style['hover']
 
-        # Efeitos hover
         self.bind('<Enter>', self._on_enter)
         self.bind('<Leave>', self._on_leave)
 

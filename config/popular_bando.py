@@ -1,7 +1,6 @@
-from database import Database
+from config.database import Database
 
 def popular_banco():
-    """Popula o banco com dados de exemplo"""
     db = Database()
     
     # Filmes
