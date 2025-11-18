@@ -512,15 +512,15 @@ class CineGamerApp:
             
             # Mostrar cada tipo
             if filmes:
-                self._criar_secao_recomendacao(scrollable, '🎬 Filmes Recomendados', filmes)
+                self._create_section_recommendation(scrollable, '🎬 Filmes Recomendados', filmes)
             
             if series:
-                self._criar_secao_recomendacao(scrollable, '📺 Séries Recomendadas', series)
+                self._create_section_recommendation(scrollable, '📺 Séries Recomendadas', series)
             
             if jogos:
-                self._criar_secao_recomendacao(scrollable, '🎮 Jogos Recomendados', jogos)
+                self._create_section_recommendation(scrollable, '🎮 Jogos Recomendados', jogos)
 
-    def _criar_secao_recomendacao(self, parent, titulo, itens):
+    def _create_section_recommendation(self, parent, titulo, itens):
         """Cria uma seção de recomendações por tipo"""
         
         # Header da seção
@@ -555,8 +555,8 @@ class CineGamerApp:
             card = CardItem(
                 parent,
                 item,
-                on_edit=self.edit_item,
-                on_delete=None  # Sem deletar em recomendações
+                on_edit=None,
+                on_delete=None  
             )
             card.pack(fill=tk.X, pady=(0, spacing['md']))
     
