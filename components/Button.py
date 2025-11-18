@@ -5,11 +5,11 @@ class button(tk.Button):
 
     def __init__(self, parent, text, command=None, style='primary', **kwargs):
         styles = {
-            'primary': {'bg': colors['secund'], 'fg': colors['text_white'], 'hover': '#2980B9'},
+            'primary': {'bg': colors['secondary'], 'fg': colors['text_white'], 'hover': '#2980B9'},
             'success': {'bg': colors['success'], 'fg': colors['text_white'], 'hover': '#229954'},
             'erro': {'bg': colors['erro'], 'fg': colors['text_white'], 'hover': '#C0392B'},
             'alert': {'bg': colors['alert'], 'fg': colors['text_white'], 'hover': '#D68910'},
-            'secund': {'bg': colors['bg_white'], 'fg': colors['text_dark'], 'hover': '#D5DBDB'},
+            'secondary': {'bg': colors['bg_white'], 'fg': colors['text_dark'], 'hover': '#D5DBDB'},
         }
 
         selected_style = styles.get(style, styles["primary"])

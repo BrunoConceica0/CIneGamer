@@ -108,7 +108,7 @@ class CineGamerApp:
             stats_frame.columnconfigure(i, weight=1)
             
             tk.Label(card, text=titulo, font=fonts['body'],
-                    bg=colors['bg_card'], fg=colors['text_secund']).pack(pady=(15, 5))
+                    bg=colors['bg_card'], fg=colors['text_secondary']).pack(pady=(15, 5))
             tk.Label(card, text=str(valor), font=fonts['title_big'],
                     bg=colors['bg_card'], fg=cor).pack(pady=(0, 15))
         
@@ -116,7 +116,7 @@ class CineGamerApp:
         card_tipos = Card(container)
         card_tipos.pack(fill=tk.X, pady=10)
         
-        tk.Label(card_tipos, text='📊 Distribuição', font=fonts['titulo_small'],
+        tk.Label(card_tipos, text='📊 Distribuição', font=fonts['title_small'],
                 bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
         
         for tipo, count in stats['per_type'].items():
@@ -126,7 +126,7 @@ class CineGamerApp:
             tk.Label(row, text=f"{icones.get(tipo, '📄')} {tipo}", font=fonts['body'],
                     bg=colors['bg_card'], fg=colors['text_dark']).pack(side=tk.LEFT)
             tk.Label(row, text=str(count), font=fonts['body_bold'],
-                    bg=colors['bg_card'], fg=colors['secund']).pack(side=tk.RIGHT)
+                    bg=colors['bg_card'], fg=colors['secondary']).pack(side=tk.RIGHT)
         
         tk.Frame(card_tipos, bg=colors['bg_card'], height=15).pack()
         
@@ -170,8 +170,8 @@ class CineGamerApp:
         
         if not itens:
             tk.Label(self.list_current, text='📭 Nenhum item',
-                    font=fonts['titulo_medium'], bg=colors['bg_white'],
-                    fg=colors['text_secund']).pack(pady=50)
+                    font=fonts['title_medium'], bg=colors['bg_white'],
+                    fg=colors['text_secondary']).pack(pady=50)
         else:
             for item in itens:
                 card = CardItem(self.list_current, item,
@@ -336,71 +336,229 @@ class CineGamerApp:
             messagebox.showinfo('Sucesso', 'Deletado!')
             self.reload_list()
     
+    
     def page_estatisticas(self):
-        """Estatísticas"""
+        """Página de Estatísticas com Gráficos"""
         container = tk.Frame(self.area_principal, bg=colors['bg_white'])
         container.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
         
         TitlePage(container, title['estatisticas']).pack(anchor='w', pady=(0, 20))
         
+        # Buscar estatísticas
         stats = self.db.get_statistics()
+        rating_dist = self.db.get_rating_distribution()
         
-        # Visão geral
-        card = Card(container)
-        card.pack(fill=tk.X, pady=10)
+        # Área com scroll
+        canvas_scroll = tk.Canvas(container, bg=colors['bg_white'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(container, orient='vertical', command=canvas_scroll.yview)
+        scrollable = tk.Frame(canvas_scroll, bg=colors['bg_white'])
         
-        tk.Label(card, text='📊 Visão Geral', font=fonts['titulo_medium'],
-                bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+        scrollable.bind('<Configure>', lambda e: canvas_scroll.configure(scrollregion=canvas_scroll.bbox('all')))
+        canvas_scroll.create_window((0, 0), window=scrollable, anchor='nw')
+        canvas_scroll.configure(yscrollcommand=scrollbar.set)
         
-        for label, value in [('Total', stats['total_itens']),
-                            ('Média', f"{stats['average_rating']}/5"),
-                            ('Horas', stats['time_total_hours'])]:
-            row = tk.Frame(card, bg=colors['bg_card'])
-            row.pack(fill=tk.X, padx=20, pady=5)
-            tk.Label(row, text=f"📌 {label}", font=fonts['body'],
-                    bg=colors['bg_card'], fg=colors['text_dark']).pack(side=tk.LEFT)
-            tk.Label(row, text=str(value), font=fonts['body_bold'],
-                    bg=colors['bg_card'], fg=colors['secund']).pack(side=tk.RIGHT)
+        canvas_scroll.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         
-        tk.Frame(card, bg=colors['bg_card'], height=15).pack()
+        from ChartWidget import ChartWidget
         
-        # Por tipo
-        card2 = Card(container)
-        card2.pack(fill=tk.X, pady=10)
+        # GRÁFICO 1: Pizza - Tipos
+        if stats['per_type']:
+            card1 = Card(scrollable)
+            card1.pack(fill=tk.X, pady=(0, 20))
+            
+            tk.Label(card1, text='📊 Distribuição por Tipo', font=fonts['title_medium'],
+                    bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+            
+            chart1 = ChartWidget(card1)
+            chart1.pack(fill=tk.BOTH, expand=True)
+            chart1.create_pie_chart(stats['per_type'], 'Filmes vs Séries vs Jogos')
         
-        tk.Label(card2, text='🎬 Por Tipo', font=fonts['titulo_medium'],
-                bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+        # GRÁFICO 2: Barras - Top Gêneros
+        if stats['top_genres']:
+            card2 = Card(scrollable)
+            card2.pack(fill=tk.X, pady=(0, 20))
+            
+            tk.Label(card2, text='🎭 Top 5 Gêneros', font=fonts['title_medium'],
+                    bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+            
+            chart2 = ChartWidget(card2)
+            chart2.pack(fill=tk.BOTH, expand=True)
+            top_genres_dict = {genre: count for genre, count in stats['top_genres']}
+            chart2.create_bar_chart(top_genres_dict, 'Gêneros Mais Populares')
         
-        icones = {'Filme': '🎬', 'Série': '📺', 'Jogo': '🎮'}
-        for tipo, count in stats['per_type'].items():
-            row = tk.Frame(card2, bg=colors['bg_card'])
-            row.pack(fill=tk.X, padx=20, pady=5)
-            tk.Label(row, text=f"{icones.get(tipo, '📄')} {tipo}", font=fonts['body'],
-                    bg=colors['bg_card'], fg=colors['text_dark']).pack(side=tk.LEFT)
-            tk.Label(row, text=str(count), font=fonts['body_bold'],
-                    bg=colors['bg_card'], fg=colors['info']).pack(side=tk.RIGHT)
+        # GRÁFICO 3: Barras Horizontal - Status
+        if stats['per_status']:
+            card3 = Card(scrollable)
+            card3.pack(fill=tk.X, pady=(0, 20))
+            
+            tk.Label(card3, text='📋 Distribuição por Status', font=fonts['title_medium'],
+                    bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+            
+            chart3 = ChartWidget(card3)
+            chart3.pack(fill=tk.BOTH, expand=True)
+            chart3.create_horizontal_bar_chart(stats['per_status'], 'Status dos Itens')
         
-        tk.Frame(card2, bg=colors['bg_card'], height=15).pack()
+        # GRÁFICO 4: Linhas - Por Ano
+        if stats['by_year']:
+            card4 = Card(scrollable)
+            card4.pack(fill=tk.X, pady=(0, 20))
+            
+            tk.Label(card4, text='📅 Itens por Ano', font=fonts['title_medium'],
+                    bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+            
+            chart4 = ChartWidget(card4)
+            chart4.pack(fill=tk.BOTH, expand=True)
+            chart4.create_line_chart(stats['by_year'], 'Lançamentos ao Longo dos Anos')
+        
+        # GRÁFICO 5: Avaliações
+        if rating_dist:
+            card5 = Card(scrollable)
+            card5.pack(fill=tk.X, pady=(0, 20))
+            
+            tk.Label(card5, text='⭐ Distribuição de Avaliações', font=fonts['title_medium'],
+                    bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
+            
+            chart5 = ChartWidget(card5)
+            chart5.pack(fill=tk.BOTH, expand=True)
+            chart5.create_rating_chart(rating_dist, 'Quantas estrelas você deu?')
     
     def page_recommendations(self):
+        """Página de Recomendações"""
         container = tk.Frame(self.area_principal, bg=colors['bg_white'])
         container.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
         
-        TitlePage(container, title['recomendacoes']).pack(anchor='w', pady=(0, 20))
+        TitlePage(container, title['recomendacoes']).pack(anchor='w', pady=(0, 5))
         
-        recomendacoes = self.db.get_recommendations(10)
+        # Subtítulo explicativo
+        tk.Label(
+            container,
+            text='Baseado nos itens que você avaliou com 4⭐ ou 5⭐',
+            font=fonts['body'],
+            bg=colors['bg_white'],
+            fg=colors['text_secondary']
+        ).pack(anchor='w', pady=(0, 20))
+        
+        # Buscar recomendações
+        recomendacoes = self.db.get_recommendations(20)
         
         if not recomendacoes:
+            # Estado vazio - sem recomendações
             card = Card(container)
             card.pack(fill=tk.BOTH, expand=True)
-            tk.Label(card, text='⭐', font=('Segoe UI', 48),
-                    bg=colors['bg_card'], fg=colors['alert']).pack(pady=(50, 20))
-            tk.Label(card, text='Sem recomendações', font=fonts['titulo_medium'],
-                    bg=colors['bg_card'], fg=colors['text_dark']).pack()
+            
+            empty_frame = tk.Frame(card, bg=colors['bg_card'])
+            empty_frame.pack(expand=True, pady=50)
+            
+            # Ícone
+            tk.Label(
+                empty_frame,
+                text='⭐',
+                font=('Segoe UI', 64),
+                bg=colors['bg_card'],
+                fg=colors['alert']
+            ).pack(pady=(20, 10))
+            
+            # Título
+            tk.Label(
+                empty_frame,
+                text='Nenhuma recomendação disponível',
+                font=fonts['title_medium'],
+                bg=colors['bg_card'],
+                fg=colors['text_dark']
+            ).pack(pady=5)
+            
+            # Mensagem
+            tk.Label(
+                empty_frame,
+                text='Avalie seus filmes, séries e jogos com 4⭐ ou 5⭐\npara receber recomendações personalizadas!',
+                font=fonts['body'],
+                bg=colors['bg_card'],
+                fg=colors['text_secondary'],
+                justify='center'
+            ).pack(pady=10)
+            
+            # Botão
+            button(
+                empty_frame,
+                '➕ Adicionar Avaliações',
+                command=lambda: self.show_page('colecao'),
+                style='primary'
+            ).pack(pady=(20, 20))
         else:
-            for item in recomendacoes:
-                card = CardItem(container, item, on_edit=self.edit_item)
-                card.pack(fill=tk.X, pady=(0, 10))
+            # Mostrar recomendações com scroll
+            scroll_frame = tk.Frame(container, bg=colors['bg_white'])
+            scroll_frame.pack(fill=tk.BOTH, expand=True)
+            
+            canvas = tk.Canvas(scroll_frame, bg=colors['bg_white'], highlightthickness=0)
+            scrollbar = tk.Scrollbar(scroll_frame, orient='vertical', command=canvas.yview)
+            
+            scrollable = tk.Frame(canvas, bg=colors['bg_white'])
+            scrollable.bind(
+                '<Configure>',
+                lambda e: canvas.configure(scrollregion=canvas.bbox('all'))
+            )
+            
+            canvas.create_window((0, 0), window=scrollable, anchor='nw')
+            canvas.configure(yscrollcommand=scrollbar.set)
+            
+            canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+            
+            # Agrupar por tipo
+            filmes = [r for r in recomendacoes if r[2] == 'Filme']
+            series = [r for r in recomendacoes if r[2] == 'Série']
+            jogos = [r for r in recomendacoes if r[2] == 'Jogo']
+            
+            # Mostrar cada tipo
+            if filmes:
+                self._criar_secao_recomendacao(scrollable, '🎬 Filmes Recomendados', filmes)
+            
+            if series:
+                self._criar_secao_recomendacao(scrollable, '📺 Séries Recomendadas', series)
+            
+            if jogos:
+                self._criar_secao_recomendacao(scrollable, '🎮 Jogos Recomendados', jogos)
+
+    def _criar_secao_recomendacao(self, parent, titulo, itens):
+        """Cria uma seção de recomendações por tipo"""
+        
+        # Header da seção
+        header_frame = tk.Frame(parent, bg=colors['bg_white'])
+        header_frame.pack(fill=tk.X, pady=(spacing['lg'], spacing['sm']))
+        
+        tk.Label(
+            header_frame,
+            text=titulo,
+            font=fonts['title_medium'],
+            bg=colors['bg_white'],
+            fg=colors['text_dark']
+        ).pack(side=tk.LEFT)
+        
+        tk.Label(
+            header_frame,
+            text=f"({len(itens)} {'item' if len(itens) == 1 else 'itens'})",
+            font=fonts['body'],
+            bg=colors['bg_white'],
+            fg=colors['text_secondary']
+        ).pack(side=tk.LEFT, padx=(spacing['sm'], 0))
+        
+        # Linha separadora
+        tk.Frame(
+            parent,
+            bg=colors['primary'],
+            height=2
+        ).pack(fill=tk.X, pady=(0, spacing['md']))
+        
+        # Cards dos itens
+        for item in itens:
+            card = CardItem(
+                parent,
+                item,
+                on_edit=self.edit_item,
+                on_delete=None  # Sem deletar em recomendações
+            )
+            card.pack(fill=tk.X, pady=(0, spacing['md']))
     
     def page_configuracoes(self):
         container = tk.Frame(self.area_principal, bg=colors['bg_white'])
@@ -411,7 +569,7 @@ class CineGamerApp:
         card = Card(container)
         card.pack(fill=tk.X, pady=10)
         
-        tk.Label(card, text='ℹ️ Informações', font=fonts['titulo_medium'],
+        tk.Label(card, text='ℹ️ Informações', font=fonts['title_medium'],
                 bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
         
         stats = self.db.get_statistics()
@@ -422,7 +580,7 @@ class CineGamerApp:
             tk.Label(row, text=label, font=fonts['body'],
                     bg=colors['bg_card'], fg=colors['text_dark']).pack(side=tk.LEFT)
             tk.Label(row, text=str(value), font=fonts['body_bold'],
-                    bg=colors['bg_card'], fg=colors['text_secund']).pack(side=tk.RIGHT)
+                    bg=colors['bg_card'], fg=colors['text_secondary']).pack(side=tk.RIGHT)
         
         tk.Frame(card, bg=colors['bg_card'], height=15).pack()
     
@@ -433,3 +591,6 @@ class CineGamerApp:
 if __name__ == '__main__':
     app = CineGamerApp()
     app.executar()
+    
+    def executar(self):
+        self.root.mainloop()

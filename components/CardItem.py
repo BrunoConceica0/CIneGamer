@@ -29,7 +29,7 @@ class CardItem(tk.Frame):
         tk.Label(
             header,
             text=item[1],  
-            font=fonts['titulo_small'],
+            font=fonts['title_small'],
             bg=colors['bg_card'],
             fg=colors['text_dark']
         ).pack(side=tk.LEFT, fill=tk.X, expand=True)
@@ -46,7 +46,7 @@ class CardItem(tk.Frame):
             text=info1,
             font=fonts['body'],
             bg=colors['bg_card'],
-            fg=colors['text_secund']
+            fg=colors['text_secondary']
         ).pack(anchor='w')
         
 
@@ -68,7 +68,7 @@ class CardItem(tk.Frame):
             'Pendente': colors['alert'],
             'Abandonado': colors['erro']
         }
-        cor_status = colors_status.get(item[6], colors['text_secund'])
+        cor_status = colors_status.get(item[6], colors['text_secondary'])
         
         status_label = tk.Label(
             info2_frame,
@@ -92,7 +92,7 @@ class CardItem(tk.Frame):
                 text=f"⏱️ {time_text}",
                 font=fonts['body'],
                 bg=colors['bg_card'],
-                fg=colors['text_secund']
+                fg=colors['text_secondary']
             ).pack(side=tk.RIGHT, padx=(0, spacing['md']))
         
         if on_edit or on_delete:

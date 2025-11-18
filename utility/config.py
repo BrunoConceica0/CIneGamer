@@ -1,7 +1,7 @@
 colors = { 
     'primary': '#2C3E50', 
-    'secund': '#3498DB', 
-    'acento': '#1ABC9C', 
+    'secondary': '#3498DB', 
+    'accent': '#1ABC9C', 
 
     'bg_dark': '#1A252F',
     'bg_white': '#ECF0F1', 
@@ -10,7 +10,7 @@ colors = {
 
     'text_dark': '#2C3E50',
     'text_white': '#FFFFFF',
-    'text_secund': '#7F8C8D',
+    'text_secondary': '#7F8C8D',
     'text_menu': '#BDC3C7',
     
     'success': '#27AE60',
@@ -24,8 +24,8 @@ colors = {
 
 fonts = {
     'title_big': ('Segoe UI', 24, 'bold'),
-    'titulo_medium': ('Segoe UI', 18, 'bold'),
-    'titulo_small': ('Segoe UI', 14, 'bold'),
+    'title_medium': ('Segoe UI', 18, 'bold'),
+    'title_small': ('Segoe UI', 14, 'bold'),
     'body': ('Segoe UI', 11),
     'body_negrito': ('Segoe UI', 11, 'bold'),
     'body_bold': ('Segoe UI', 11, 'bold'),

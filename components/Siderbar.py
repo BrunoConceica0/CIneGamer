@@ -71,7 +71,7 @@ class sidebar(tk.Frame):
         self.config(bg=colors['hover'])
         for widget in self.winfo_children():
             self._mudar_bg_recursivo(widget, colors['hover'])
-        self.icone_label.config(fg=colors['acento'])
+        self.icone_label.config(fg=colors['accent'])
         self.text_label.config(fg=colors['text_white'], font=fonts['body_negrito'])
     
     def desselecionar(self):
