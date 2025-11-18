@@ -23,7 +23,6 @@ def  create_section_recommendation(self, parent, titulo, itens):
             fg=colors['text_secondary']
         ).pack(side=tk.LEFT, padx=(spacing['sm'], 0))
         
-        # Linha separadora
         tk.Frame(
             parent,
             bg=colors['primary'],

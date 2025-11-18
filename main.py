@@ -138,14 +138,12 @@ class CineGamerApp:
                style='primary').pack(anchor='w', pady=10)
     
     def page_colection(self):
-        """Mostra página de coleção"""
         collections(self)
 
     def page_settings(self):
         settings(self)
     
     def reload_list(self):
-        """Recarrega lista de itens"""
         reload_list(self)  
     
     def add_item(self):

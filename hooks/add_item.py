@@ -5,30 +5,21 @@ from components.InputComposition import InputComposition
 from utility.config import colors
 
 def add_item(parent_app):
-    """
-    Mostra dialog para adicionar novo item
-    
-    Args:
-        parent_app: Instância da CineGamerApp (self)
-    """
-    # ========== CRIAR DIALOG ==========
+ 
     dialog = tk.Toplevel(parent_app.root)
     dialog.title('➕ Adicionar')
     dialog.geometry('500x700')
     dialog.transient(parent_app.root)
     dialog.grab_set()
     
-    # Centralizar
     dialog.update_idletasks()
     x = (dialog.winfo_screenwidth() // 2) - (dialog.winfo_width() // 2)
     y = (dialog.winfo_screenheight() // 2) - (dialog.winfo_height() // 2)
     dialog.geometry(f'+{x}+{y}')
     
-    # Container principal
     container = tk.Frame(dialog, bg=colors['bg_white'])
     container.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
     
-    # ========== CAMPOS ==========
     name = InputComposition(container, 'Nome:*', types='entry')
     name.pack(fill=tk.X, pady=(0, 10))
     
@@ -55,15 +46,11 @@ def add_item(parent_app):
     obs = InputComposition(container, 'Obs:', types='text')
     obs.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
     
-    # ========== FUNÇÃO SALVAR (DENTRO!) ==========
     def save():
-        """Valida e salva o novo item"""
-        # Validação
         if not name.get() or not tipo.get() or not genero.get() or not status.get():
             messagebox.showerror('Erro', 'Preencha campos obrigatórios (*)')
             return
         
-        # Preparar dados
         data = (
             name.get(),
             tipo.get(),
@@ -75,7 +62,6 @@ def add_item(parent_app):
             obs.get() if obs.get() else None
         )
         
-        # Salvar no banco
         if parent_app.db.add_content(data):
             messagebox.showinfo('Sucesso', 'Item adicionado!')
             dialog.destroy()
@@ -86,7 +72,6 @@ def add_item(parent_app):
         else:
             messagebox.showerror('Erro', 'Falha ao adicionar item!')
     
-    # ========== BOTÕES ==========
     btn_frame = tk.Frame(container, bg=colors['bg_white'])
     btn_frame.pack(fill=tk.X)
     

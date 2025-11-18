@@ -66,7 +66,6 @@ class sidebar(tk.Frame):
             self._mudar_bg_recursivo(child, cor)
     
     def selecionar(self):
-        """Marca este botão como selector"""
         self.selector = True
         self.config(bg=colors['hover'])
         for widget in self.winfo_children():
@@ -75,7 +74,6 @@ class sidebar(tk.Frame):
         self.text_label.config(fg=colors['text_white'], font=fonts['body_negrito'])
     
     def desselecionar(self):
-        """Desmarca este botão"""
         self.selector = False
         self.config(bg=colors['bg_sidebar'])
         for widget in self.winfo_children():
@@ -87,7 +85,6 @@ class sidebar(tk.Frame):
 
     
     def clean(self):
-        #Limpa o campo
         if isinstance(self.widget, tk.Text):
             self.widget.delete('1.0', tk.END)
         else:

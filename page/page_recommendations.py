@@ -13,7 +13,6 @@ def page_recommendations(self):
         
         TitlePage(container, title['recomendacoes']).pack(anchor='w', pady=(0, 5))
         
-        # Subtítulo explicativo
         tk.Label(
             container,
             text='Baseado nos itens que você avaliou com 4⭐ ou 5⭐',
@@ -22,18 +21,15 @@ def page_recommendations(self):
             fg=colors['text_secondary']
         ).pack(anchor='w', pady=(0, 20))
         
-        # Buscar recomendações
         recomendacoes = self.db.get_recommendations(20)
         
         if not recomendacoes:
-            # Estado vazio - sem recomendações
             card = Card(container)
             card.pack(fill=tk.BOTH, expand=True)
             
             empty_frame = tk.Frame(card, bg=colors['bg_card'])
             empty_frame.pack(expand=True, pady=50)
             
-            # Ícone
             tk.Label(
                 empty_frame,
                 text='⭐',
@@ -42,7 +38,6 @@ def page_recommendations(self):
                 fg=colors['alert']
             ).pack(pady=(20, 10))
             
-            # Título
             tk.Label(
                 empty_frame,
                 text='Nenhuma recomendação disponível',
@@ -51,7 +46,6 @@ def page_recommendations(self):
                 fg=colors['text_dark']
             ).pack(pady=5)
             
-            # Mensagem
             tk.Label(
                 empty_frame,
                 text='Avalie seus filmes, séries e jogos com 4⭐ ou 5⭐\npara receber recomendações personalizadas!',
@@ -61,7 +55,6 @@ def page_recommendations(self):
                 justify='center'
             ).pack(pady=10)
             
-            # Botão
             button(
                 empty_frame,
                 '➕ Adicionar Avaliações',
@@ -88,12 +81,10 @@ def page_recommendations(self):
             canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
             scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
             
-            # Agrupar por tipo
             filmes = [r for r in recomendacoes if r[2] == 'Filme']
             series = [r for r in recomendacoes if r[2] == 'Série']
             jogos = [r for r in recomendacoes if r[2] == 'Jogo']
             
-            # Mostrar cada tipo
             if filmes:
                 self.create_section_recommendation(scrollable, '🎬 Filmes Recomendados', filmes)
             

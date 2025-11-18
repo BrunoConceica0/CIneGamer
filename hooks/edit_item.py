@@ -5,14 +5,6 @@ from components.InputComposition import InputComposition
 from utility.config import colors
 
 def edit_item(parent_app, item_id):
-    """
-    Mostra dialog para editar item existente
-    
-    Args:
-        parent_app: Instância da CineGamerApp
-        item_id: ID do item a ser editado
-    """
-    # ========== BUSCAR ITEM ==========
     item_row = parent_app.db.get_content(item_id)
     if not item_row:
         messagebox.showerror('Erro', 'Item não encontrado.')
@@ -20,7 +12,6 @@ def edit_item(parent_app, item_id):
     
     item = list(item_row)
     
-    # ========== CRIAR DIALOG ==========
     dialog = tk.Toplevel(parent_app.root)
     dialog.title(f'✏️ Editar: {item[1]}')
     dialog.geometry('500x700')
@@ -33,11 +24,9 @@ def edit_item(parent_app, item_id):
     y = (dialog.winfo_screenheight() // 2) - (dialog.winfo_height() // 2)
     dialog.geometry(f'+{x}+{y}')
     
-    # Container principal
     container = tk.Frame(dialog, bg=colors['bg_white'])
     container.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
     
-    # ========== CAMPOS COM VALORES INICIAIS ==========
     name = InputComposition(container, 'Nome:*', types='entry', initial_value=item[1])
     name.pack(fill=tk.X, pady=(0, 10))
     
@@ -65,7 +54,6 @@ def edit_item(parent_app, item_id):
     obs = InputComposition(container, 'Obs:', types='text', initial_value=item[8])
     obs.pack(fill=tk.BOTH, expand=True, pady=(0, 15))
     
-    # ========== FUNÇÃO ATUALIZAR (DENTRO!) ==========
     def update():
         """Valida e atualiza o item"""
         # Validação
@@ -73,7 +61,6 @@ def edit_item(parent_app, item_id):
             messagebox.showerror('Erro', 'Preencha campos obrigatórios (*)')
             return
         
-        # Preparar dados
         data = (
             name.get(),
             tipo.get(),
@@ -89,13 +76,11 @@ def edit_item(parent_app, item_id):
             messagebox.showinfo('Sucesso', 'Item atualizado!')
             dialog.destroy()
             
-            # Recarregar lista se estiver na página de coleção
             if hasattr(parent_app, 'list_current') and parent_app.list_current.winfo_ismapped():
                 parent_app.reload_list()
         else:
             messagebox.showerror('Erro', 'Falha ao atualizar!')
     
-    # ========== BOTÕES ==========
     btn_frame = tk.Frame(container, bg=colors['bg_white'])
     btn_frame.pack(fill=tk.X)
     

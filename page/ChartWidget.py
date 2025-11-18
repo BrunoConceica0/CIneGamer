@@ -10,7 +10,6 @@ class ChartWidget(tk.Frame):
     def __init__(self, parent, **kwargs):
         super().__init__(parent, bg=colors['bg_card'], **kwargs)
         
-        # Configurar estilo matplotlib
         try:
             plt.style.use('seaborn-v0_8-darkgrid')
         except:
@@ -19,7 +18,6 @@ class ChartWidget(tk.Frame):
             except:
                 plt.style.use('default')
         
-        # Criar figura
         self.figure = Figure(figsize=(6, 4), dpi=100, facecolor=colors['bg_card'])
         self.canvas = FigureCanvasTkAgg(self.figure, self)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
