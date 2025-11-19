@@ -7,7 +7,9 @@ from components.TitlePage import TitlePage
 from components.CardItem import CardItem
 
 def collections(self):  
-    container = tk.Frame(self.area_principal, bg=colors['bg_white'])
+    container = tk.Frame(self.
+
+    principal_area, bg=colors['bg_white'])
     container.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
     
     TitlePage(container, title['colecao']).pack(anchor='w', pady=(0, 20))

@@ -49,41 +49,38 @@ class sidebar(tk.Frame):
         if not self.selector:
             self.config(bg=colors['hover_sidebar'])
             for widget in self.winfo_children():
-                self._mudar_bg_recursivo(widget, colors['hover_sidebar'])
+                self._change_bg_recursive(widget, colors['hover_sidebar'])
     
     def _on_leave(self, event):
         if not self.selector:
             self.config(bg=colors['bg_sidebar'])
             for widget in self.winfo_children():
-                self._mudar_bg_recursivo(widget, colors['bg_sidebar'])
+                self._change_bg_recursive(widget, colors['bg_sidebar'])
     
-    def _mudar_bg_recursivo(self, widget, cor):
+    def _change_bg_recursive(self, widget, cor):
         try:
             widget.config(bg=cor)
         except:
             pass
         for child in widget.winfo_children():
-            self._mudar_bg_recursivo(child, cor)
+            self._change_bg_recursive(child, cor)
     
-    def selecionar(self):
+    def select(self):
         self.selector = True
         self.config(bg=colors['hover'])
         for widget in self.winfo_children():
-            self._mudar_bg_recursivo(widget, colors['hover'])
+            self._change_bg_recursive(widget, colors['hover'])
         self.icone_label.config(fg=colors['accent'])
         self.text_label.config(fg=colors['text_white'], font=fonts['body_negrito'])
     
-    def desselecionar(self):
+    def deselect(self):
         self.selector = False
         self.config(bg=colors['bg_sidebar'])
         for widget in self.winfo_children():
-            self._mudar_bg_recursivo(widget, colors['bg_sidebar'])
+            self._change_bg_recursive(widget, colors['bg_sidebar'])
         self.icone_label.config(fg=colors['text_menu'])
         self.text_label.config(fg=colors['text_menu'], font=fonts['menu'])
 
-
-
-    
     def clean(self):
         if isinstance(self.widget, tk.Text):
             self.widget.delete('1.0', tk.END)

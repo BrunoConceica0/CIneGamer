@@ -20,10 +20,17 @@ colors = {
     
     'hover': '#34495E',
     'hover_sidebar': '#34495E',
+
+    'gray': "#E5E7EB"
+
+   
 }
 
 fonts = {
+    'title_biglx': ('Segoe UI', 64),
+    'title_bigLg': ('Segoe UI', 32),
     'title_big': ('Segoe UI', 24, 'bold'),
+    'title_mediumLg': ('Segoe UI', 20, 'bold'),
     'title_medium': ('Segoe UI', 18, 'bold'),
     'title_small': ('Segoe UI', 14, 'bold'),
     'body': ('Segoe UI', 11),

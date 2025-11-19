@@ -2,7 +2,6 @@ import tkinter as tk
 from utility.config import colors, fonts, spacing         
 
 class CardItem(tk.Frame):
-    #Card para exibir um item da coleção
     
     def __init__(self, parent, item, on_edit=None, on_delete=None, **kwargs):
         super().__init__(parent, bg=colors['bg_card'], relief=tk.RAISED, bd=2, **kwargs)
@@ -21,7 +20,7 @@ class CardItem(tk.Frame):
         tk.Label(
             header,
             text=icone,
-            font=('Segoe UI', 20),
+            font=fonts['title_mediumLg'],
             bg=colors['bg_card']
         ).pack(side=tk.LEFT, padx=(0, spacing['sm']))
         
@@ -81,7 +80,6 @@ class CardItem(tk.Frame):
         )
         status_label.pack(side=tk.RIGHT)
         
-        # Tempo (se houver)
         if item[7] and item[7] > 0:  
             hours = item[7] // 60
             minutes = item[7] % 60

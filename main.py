@@ -1,19 +1,23 @@
 import tkinter as tk
 from tkinter import messagebox
 from config.database import Database
-from utility.config import colors,fonts
+from utility.config import colors, fonts
 from components.Siderbar import sidebar 
 from components.TitlePage import TitlePage
 from components.Card import Card
 from components.Button import button
 from utility.ui_config import menu, title
+
 from hooks.edit_item import edit_item
 from hooks.add_item import add_item
-from hooks.create_section_recommendation import create_section_recommendation
+from hooks.sectionRecommendation import create_section_recommendation
+
 import page.page_statistics as statistics
 import page.page_recommendations as recommendations
 from page.collections import collections, reload_list
-from page.settings import  page_settings as settings
+from page.settings import page_settings as settings
+
+
 class CineGamerApp:
     
     def __init__(self):
@@ -25,8 +29,8 @@ class CineGamerApp:
     
     def configure_window(self):
         self.root.title(title["title"])
-        self.root.geometry('1000x700')
-        self.root.minsize(1000, 700)
+        self.root.geometry('1200x700')  # ← AUMENTADO
+        self.root.minsize(1200, 700)
         
         self.root.update_idletasks()
         largura = self.root.winfo_width()
@@ -41,8 +45,8 @@ class CineGamerApp:
     
     def create_interface(self):
         self.create_sidebar()
-        self.area_principal = tk.Frame(self.root, bg=colors['bg_white'])
-        self.area_principal.grid(row=0, column=1, sticky='nsew')
+        self.principal_area = tk.Frame(self.root, bg=colors['bg_white'])  # ← CORRETO!
+        self.principal_area.grid(row=0, column=1, sticky='nsew')
     
     def create_sidebar(self):
         frame_sidebar = tk.Frame(self.root, bg=colors['bg_sidebar'], width=200)
@@ -52,9 +56,9 @@ class CineGamerApp:
         header = tk.Frame(frame_sidebar, bg=colors['bg_sidebar'])
         header.pack(fill=tk.X, pady=(20, 30))
         
-        tk.Label(header, text='🎬', font=('Segoe UI', 32),
+        tk.Label(header, text='🎬', font=fonts['title_bigLg'],
                 bg=colors['bg_sidebar'], fg=colors['text_white']).pack()
-        tk.Label(header, text='CINEGAMER', font=('Segoe UI', 20, 'bold'),
+        tk.Label(header, text='CINEGAMER', font=fonts["title_mediumLg"],
                 bg=colors['bg_sidebar'], fg=colors['text_white']).pack()
         
         tk.Frame(frame_sidebar, bg=colors['hover'], height=2).pack(fill=tk.X, padx=15)
@@ -69,14 +73,14 @@ class CineGamerApp:
             self.menu_botoes[id_page] = btn
     
     def show_page(self, page):
-        for widget in self.area_principal.winfo_children():
+        for widget in self.principal_area.winfo_children():  # ← CORRETO!
             widget.destroy()
         
         for btn in self.menu_botoes.values():
-            btn.desselecionar()
+            btn.deselect()
         
         if page in self.menu_botoes:
-            self.menu_botoes[page].selecionar()
+            self.menu_botoes[page].select()
         
         if page == 'inicio':
             self.page()
@@ -87,10 +91,10 @@ class CineGamerApp:
         elif page == 'recomendacoes':
             self.page_recommendations()
         elif page == 'configuracoes':
-            self.page_settings()  
+            self.page_settings()
     
     def page(self):
-        container = tk.Frame(self.area_principal, bg=colors['bg_white'])
+        container = tk.Frame(self.principal_area, bg=colors['bg_white'])  # ← CORRETO!
         container.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
         
         TitlePage(container, title['inicio']).pack(anchor='w', pady=(0, 20))
@@ -141,7 +145,7 @@ class CineGamerApp:
         settings(self)
     
     def reload_list(self):
-        reload_list(self)  
+        reload_list(self)
     
     def add_item(self):
         add_item(self)
@@ -153,7 +157,7 @@ class CineGamerApp:
         if messagebox.askyesno('Confirmar', 'Deletar este item?'):
             self.db.delete_content(item_id)
             messagebox.showinfo('Sucesso', 'Deletado!')
-            self.reload_list() 
+            self.reload_list()
     
     def page_statistics(self):
         statistics.page_statistics(self)
@@ -166,6 +170,7 @@ class CineGamerApp:
     
     def executar(self):
         self.root.mainloop()
+
 
 if __name__ == '__main__':
     app = CineGamerApp()
