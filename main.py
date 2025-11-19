@@ -7,16 +7,13 @@ from components.TitlePage import TitlePage
 from components.Card import Card
 from components.Button import button
 from utility.ui_config import menu, title
-
 from hooks.edit_item import edit_item
 from hooks.add_item import add_item
 from hooks.create_section_recommendation import create_section_recommendation
-
 import page.page_statistics as statistics
 import page.page_recommendations as recommendations
 from page.collections import collections, reload_list
 from page.settings import  page_settings as settings
-
 class CineGamerApp:
     
     def __init__(self):
@@ -28,8 +25,8 @@ class CineGamerApp:
     
     def configure_window(self):
         self.root.title(title["title"])
-        self.root.geometry('1200x700')
-        self.root.minsize(1200, 700)
+        self.root.geometry('1000x700')
+        self.root.minsize(1000, 700)
         
         self.root.update_idletasks()
         largura = self.root.winfo_width()
