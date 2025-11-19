@@ -4,9 +4,11 @@ from utility.config import colors, fonts
 from components.Card import Card
 from utility.ui_config import title
 
-def page_settings(self):  # ← MUDE self PARA self
+def page_settings(self):  
 
-    container = tk.Frame(self.area_principal, bg=colors['bg_white'])
+    container = tk.Frame(self.
+
+principal_area, bg=colors['bg_white'])
     container.pack(fill=tk.BOTH, expand=True, padx=30, pady=30)
     
     TitlePage(container, title['configuracoes']).pack(anchor='w', pady=(0, 20))
@@ -18,7 +20,7 @@ def page_settings(self):  # ← MUDE self PARA self
             bg=colors['bg_card'], fg=colors['text_dark']).pack(anchor='w', padx=20, pady=(15, 10))
     
     stats = self.db.get_statistics()
-    for label, value in [('Versão', '2.0.0'), ('Banco', 'cineGamer.db'),
+    for label, value in [('Versão', '1.0.0'), ('Banco', 'cineGamer.db'),
                         ('Registros', stats['total_itens'])]:
         row = tk.Frame(card, bg=colors['bg_card'])
         row.pack(fill=tk.X, padx=20, pady=5)

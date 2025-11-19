@@ -1,8 +1,7 @@
 
 import tkinter as tk
 from tkinter import ttk 
-from utility.config import colors, fonts # Assumindo estas importações
-
+from utility.config import colors, fonts 
 class InputComposition(tk.Frame):
     
     def __init__(self, master, label_text, **kwargs):
@@ -15,7 +14,6 @@ class InputComposition(tk.Frame):
         tk.Label(self, text=label_text, font=fonts['body'], 
                  bg=colors['bg_white'], fg=colors['text_dark']).pack(anchor='w')
 
-        # Configuração do Widget
         if self.widget_type == 'entry':
             self.value = tk.StringVar(value=self.initial_value if self.initial_value is not None else '')
             self.widget = tk.Entry(self, font=fonts['body'], textvariable=self.value, **kwargs)
@@ -39,7 +37,6 @@ class InputComposition(tk.Frame):
         self.widget.pack(fill=tk.X, expand=True)
         
     def get(self):
-        """Método unificado para obter o valor do widget"""
         if self.widget_type in ['entry', 'combo']:
             return self.value.get()
         elif self.widget_type == 'spinbox':
