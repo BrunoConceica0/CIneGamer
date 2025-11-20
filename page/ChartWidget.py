@@ -155,11 +155,11 @@ class ChartWidget(tk.Frame):
         labels = [f'{r} estrelas' for r in ratings]
         
         rating_colors = [
-            colors['erro'],    # 1 star
-            colors['alert'],   # 2 stars
-            colors['info'],    # 3 stars
-            colors['accent'],  # 4 stars
-            colors['success']  # 5 stars
+            colors['erro'],    
+            colors['alert'],   
+            colors['info'],   
+            colors['accent'],  
+            colors['success']  
         ]
         
         bars = ax.bar(labels, counts, color=rating_colors, alpha=0.8, edgecolor=colors['primary'])

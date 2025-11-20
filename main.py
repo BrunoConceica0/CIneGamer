@@ -29,7 +29,7 @@ class CineGamerApp:
     
     def configure_window(self):
         self.root.title(title["title"])
-        self.root.geometry('1200x700')  # ← AUMENTADO
+        self.root.geometry('1200x700') 
         self.root.minsize(1200, 700)
         
         self.root.update_idletasks()

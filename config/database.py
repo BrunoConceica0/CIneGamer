@@ -55,19 +55,16 @@ class Database:
             return False
 
     def list_content(self):
-        """Retorna todos os itens da coleção"""
         self.connect()
         self.cursor.execute("SELECT * FROM content ORDER BY date_register DESC")
         return self.cursor.fetchall()
     
     def get_content(self, item_id):
-        """Retorna um item pelo ID"""
         self.connect()
         self.cursor.execute("SELECT * FROM content WHERE id = ?", (item_id,))
         return self.cursor.fetchone()
 
     def delete_content(self, item_id):
-        """Deleta um item pelo ID"""
         self.connect()
         try:
             self.cursor.execute("DELETE FROM content WHERE id = ?", (item_id,))
@@ -78,7 +75,6 @@ class Database:
             return False
             
     def get_statistics(self):
-        """Calcula e retorna estatísticas resumidas"""
         self.connect()
         stats = {
             'total_itens': 0,
@@ -90,31 +86,25 @@ class Database:
             'by_year': []
         }
 
-        # 1. Total de itens
         self.cursor.execute("SELECT COUNT(*) FROM content")
         stats['total_itens'] = self.cursor.fetchone()[0]
 
-        # 2. Média de avaliação
         self.cursor.execute("SELECT AVG(avalible) FROM content WHERE avalible IS NOT NULL")
         avg = self.cursor.fetchone()[0]
         stats['average_rating'] = f"{avg:.1f}" if avg else 'N/A'
         
-        # 3. Tempo total em horas
         self.cursor.execute("SELECT SUM(timer_minutes) FROM content")
         total_minutes = self.cursor.fetchone()[0]
         stats['time_total_hours'] = round((total_minutes / 60), 1) if total_minutes else 0
 
-        # 4. Por tipo
         self.cursor.execute("SELECT types, COUNT(*) FROM content GROUP BY types")
         for types, count in self.cursor.fetchall():
             stats['per_type'][types] = count
         
-        # 5. Por status
         self.cursor.execute("SELECT status, COUNT(*) FROM content GROUP BY status")
         for status, count in self.cursor.fetchall():
             stats['per_status'][status] = count
         
-        # 6. Top gêneros
         self.cursor.execute("""
             SELECT genre, COUNT(*) as count
             FROM content 
@@ -138,7 +128,6 @@ class Database:
         return stats
     
     def get_recommendations(self, limit=5):
-        """Retorna itens com avaliação 4 ou 5 e status 'Assistido'"""
         self.connect()
         sql = """
             SELECT * FROM content 
@@ -150,7 +139,6 @@ class Database:
         return self.cursor.fetchall()
     
     def update_content(self, item_id, data):
-        """Atualiza um item existente"""
         self.connect()
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
       
@@ -168,7 +156,6 @@ class Database:
             print(f"Erro ao atualizar conteúdo: {e}")
             return False
     
-    # ========== NOVAS FUNÇÕES PARA MATPLOTLIB ==========
     
     def get_rating_distribution(self):
         """Retorna distribuição de avaliações (1-5 estrelas)"""

@@ -15,7 +15,7 @@ def edit_item(parent_app, item_id):
     
     window = tk.Toplevel(parent_app.root)
     window.title(f'✏️ Editar: {item[1]}')
-    window.geometry('750x750')
+    window.geometry('750x700')
     window.transient(parent_app.root)
     window.grab_set()
     window.configure(bg=colors['bg_white'])

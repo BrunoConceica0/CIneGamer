@@ -8,7 +8,7 @@ from utility.ui_config import types, genres, status, reviews, labels, placeholde
 def add_item(parent_app):
     window = tk.Toplevel(parent_app.root)
     window.title('➕ Adicionar Item')
-    window.geometry('1000x1000')
+    window.geometry('750x700')
     window.transient(parent_app.root)
     window.grab_set()
     window.configure(bg=colors['bg_white'])
